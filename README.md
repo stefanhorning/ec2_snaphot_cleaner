@@ -9,16 +9,20 @@ So on ubuntu for example run following commands to set things up:
 * `apt-get install awscli jq`
 * `aws configure`
 
+Also make sure you have read and write permissions for EC2.
+
 ## Usage
 Make sure script is executable (`chmod +x ec2_snaphot_cleaner.sh`). Then do a `./ec2_snaphot_cleaner.sh`
 
 ## Purpose of this Tool
 This tool checks for snapshots being used as EBS volumes by machines directly using the `aws describe-volumes` command, it
-also checks snaphots being used by AMIs by using the `aws describe-images` command. Snaphots that don't appear in either of
-those lists will be deleted!
+also checks snaphots being used by AMIs by using the `aws describe-images` command.
+**Snaphots that don't appear in either of those lists will be deleted!**
+
+The script will give you an output of what snaphot IDs have been found in use and which ones will be kept/deleted.
 
 ## Caution / Disclaimer / Warning!
-Deleted snaphots can not be recovered! So make sure first this tool actually does what you want! The `aws delete-snaphot` command (being used here) however
+**Deleted snaphots can not be recovered!** So make sure first this tool actually does what you want! The `aws delete-snaphot` command (being used here) however
 makes sure snaphots building on top of each other (sharing blocks) stay intact. See http://docs.aws.amazon.com/cli/latest/reference/ec2/delete-snapshot.html
 
 In my usecase checking only for Volumes and AMIs in use is enough. But if you have for some reason other things depending on snaphots don't run this!
