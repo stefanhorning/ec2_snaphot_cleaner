@@ -43,7 +43,7 @@ done
 echo "# Count: $merged_count"
 echo " "
 
-echo "All EC snapshots currently present on AWS"
+echo "All EC2 snapshots currently present on AWS"
 echo "------------------------------------------"
 all_snaphots_present=$(aws ec2 describe-snapshots --owner self | jq -r .Snapshots[].SnapshotId | sort)
 present_count=0
