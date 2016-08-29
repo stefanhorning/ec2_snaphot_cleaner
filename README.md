@@ -14,6 +14,9 @@ Also make sure you have read and write permissions for EC2.
 ## Usage
 Make sure script is executable (`chmod +x ec2_snaphot_cleaner.sh`). Then do a `./ec2_snaphot_cleaner.sh`
 
+If you want to use a non default AWS profile (you can have multiple in your `.aws/config`) change the `AWS_PROFILE` variable
+on the top of the script. See [AWS documentation on profiles](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html#cli-multiple-profiles)
+
 ## Purpose of this Tool
 This tool checks for snapshots being used as EBS volumes by machines directly using the `aws describe-volumes` command, it
 also checks snaphots being used by AMIs by using the `aws describe-images` command.

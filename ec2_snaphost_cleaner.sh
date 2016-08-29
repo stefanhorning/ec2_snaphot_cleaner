@@ -5,9 +5,11 @@
 # For example with `apt-get install awscli jq && aws configure`
 RED='\033[0;31m'
 NC='\033[0m' # No Color
+# set this to other profiles you might have in your aws config:
+AWS_PROFILE=default
 
-snapshots_used_by_volumes=$(aws ec2 describe-volumes | jq -r .Volumes[].SnapshotId | sort)
-snapshots_used_by_amis=$(aws ec2 describe-images --owner self | jq -r .Images[].BlockDeviceMappings[].Ebs.SnapshotId | sort)
+snapshots_used_by_volumes=$(aws ec2 --profile $AWS_PROFILE describe-volumes | jq -r .Volumes[].SnapshotId | sort)
+snapshots_used_by_amis=$(aws ec2 --profile $AWS_PROFILE describe-images --owner self | jq -r .Images[].BlockDeviceMappings[].Ebs.SnapshotId | sort)
 all_snapshots_used=()
 
 vol_count=0
@@ -45,7 +47,7 @@ echo " "
 
 echo "All EC2 snapshots currently present on AWS"
 echo "------------------------------------------"
-all_snaphots_present=$(aws ec2 describe-snapshots --owner self | jq -r .Snapshots[].SnapshotId | sort)
+all_snaphots_present=$(aws ec2 --profile $AWS_PROFILE describe-snapshots --owner self | jq -r .Snapshots[].SnapshotId | sort)
 present_count=0
 for snap in ${all_snaphots_present[@]}; do
   echo "$snap"
@@ -62,7 +64,7 @@ for snap in ${all_snaphots_present[@]}; do
     echo "🗹  Keeping $snap"
   else
     printf "${RED}🗵 ${NC} Deleting $snap \n"
-    aws ec2 delete-snapshot --snapshot-id $snap
+    aws ec2 --profile $AWS_PROFILE delete-snapshot --snapshot-id $snap
     (( deleted_count++ ))
   fi
 done
