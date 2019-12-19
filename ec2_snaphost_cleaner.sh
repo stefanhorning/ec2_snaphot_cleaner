@@ -79,9 +79,9 @@ echo "Deleting snapshots not found in list of used ones"
 echo "-------------------------------------------------"
 for snap in ${all_snaphots_present[@]}; do
   if [[ " ${all_snapshots_used[@]} " =~ " ${snap} " ]]; then
-    echo "🗹  Keeping $snap"
+    echo "☑ Keeping $snap"
   else
-    printf "${RED}🗵 ${NC} Deleting $snap \n"
+    printf "${RED}☒${NC} Deleting $snap \n"
     aws ec2 delete-snapshot --snapshot-id $snap
     (( deleted_count++ ))
   fi
